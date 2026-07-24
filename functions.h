@@ -6,76 +6,90 @@
 using namespace std;
 
 class CGPACalculator{
-    float* grade;
-    int numCourses;
-    int* creditHours;
+private:
     string* courseName;
-    public:
+    float* grade;
+    int* creditHours;
+    int numCourses;
+
+public:
     CGPACalculator(){
-        grade=nullptr;
-        numCourses=0;
-        creditHours=nullptr;
-        courseName=nullptr;
+        numCourses = 0;
+        courseName = nullptr;
+        grade = nullptr;
+        creditHours = nullptr;
     }
     ~CGPACalculator(){
-        delete[] grade;
         delete[] courseName;
+        delete[] grade;
         delete[] creditHours;
     }
-
     void inputData(){
-        cout<<"enter the courses :"<<endl;
-        cin>>numCourses;
-        grade=new float[numCourses];
-        creditHours=new int[numCourses];
-        courseName=new string[numCourses];
-        for(int i=0;i<numCourses;i++){
-            cout<<"enter the credit hours :"<<endl;
-            cin>>creditHours[i];
-            cout<<"enter the course name :"<<endl;
-            cin>>courseName[i];
-            cout<<"enter the grade :"<<endl;
-            cin>>grade[i];
+        delete[] courseName;
+        delete[] grade;
+        delete[] creditHours;
+        cout<< "Enter Number of Courses: ";
+        cin >> numCourses;
+        courseName = new string[numCourses];
+        grade = new float[numCourses];
+        creditHours = new int[numCourses];
+        cin.ignore();
+        for (int i = 0; i < numCourses; i++){
+            cout << "\nCourse " << i + 1 << endl;
+            cout << "Course Name: ";
+            getline(cin, courseName[i]);
+            cout << "Grade Point (0-4): ";
+            cin >> grade[i];
+            cout << "Credit Hours: ";
+            cin >> creditHours[i];
+            cin.ignore();
         }
     }
     int calculateTotalCredits(){
-        int totalCreditHour=0;
-        for(int i=0;i<numCourses;i++){
-            totalCreditHour+=creditHours[i];
+        int totalCredits = 0;
+        for (int i = 0; i < numCourses; i++){
+            totalCredits += creditHours[i];
         }
-        return totalCreditHour;
+        return totalCredits;
     }
     float calculateTotalGradePoints(){
-     float totalGradePoint=0;
-            for(int i=0;i<numCourses;i++){
-                totalGradePoint=grade[i]*creditHours[i];
-            }
-            return totalGradePoint;
+        float totalGradePoints = 0;
+        for (int i = 0; i < numCourses; i++){
+            totalGradePoints += grade[i] * creditHours[i];
+        }
+        return totalGradePoints;
     }
     float calculateGPA(){
-        return calculateTotalGradePoints()/calculateTotalCredits();
+        if (calculateTotalCredits() == 0)
+            return 0;
 
-}
-float calculateCGPA(){
-    return  calculateGPA();
-}
-void displayCourses(){
-    for(int i=0 ;i<numCourses;i++){
-    cout<<"The Course Name is :"<<courseName[i]<<endl;
-    cout<<"The Course Grade is :"<<grade[i]<<endl;
-    cout<<"The Course Credit Hour is :"<<creditHours[i]<<endl;
-}
-}
- void displayResult()
-    {
+        return calculateTotalGradePoints() / calculateTotalCredits();
+    }
+    float calculateCGPA(){
+        return calculateGPA();
+    }
+    void displayCourses(){
+        cout << "\n===============================" << endl;
+        cout << "       COURSE DETAILS" << endl;
+        cout << "===============================" << endl;
+        for (int i = 0; i < numCourses; i++) {
+            cout << "\nCourse " << i + 1 << endl;
+            cout << "Course Name  : " << courseName[i] << endl;
+            cout << "Grade Point  : " << grade[i] << endl;
+            cout << "Credit Hours : " << creditHours[i] << endl;
+        }
+    }
+    void displayResult(){ 
         displayCourses();
-        cout << "Total Credits: "
-             << calculateTotalCredits() << endl;
-        cout << "Total Grade Points: "
-             << calculateTotalGradePoints() << endl;
-        cout << "Semester GPA: "
-             << calculateGPA() << endl;
-        cout << "Final CGPA: "
+    cout<< "\n===============================" << endl;
+    cout<< "           RESULT" << endl;
+    cout<< "===============================" << endl;
+        cout<< "Total Credits      : "
+        << calculateTotalCredits()<< endl;
+        cout<< "Total Grade Points : "
+        <<calculateTotalGradePoints()<< endl;
+        cout<<"Semester GPA       : "<< calculateGPA() << endl;
+        cout << "Overall CGPA       : "
              << calculateCGPA() << endl;
     }
 };
